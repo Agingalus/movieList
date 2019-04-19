@@ -1,0 +1,13 @@
+body {
+    text-align: center;
+    padding: 10%;
+    background: green;
+}
+
+li {
+    list-style: none;
+}
+
+input {
+    margin: 3px;
+}
