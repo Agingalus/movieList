@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,26 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Movie list</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
 
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <h1>Movies</h1>
-    <label for="title">Title  </label>
-    <input id="title" type="text">
-    <br>
-    <label for="rating">Rating</label>
+    <div id="myHeader"><b>&#9733 &nbsp;</b>Movies<b>&nbsp; &#9733</b></div>
 
-    <input id="rating" type="text">
+    <label for="title">Title: &nbsp; &nbsp; </label>
+    <input id="title" type="text" tabindex="1" placeholder="Movie Title">
     <br>
-    <button id="btnAdd" type="submit">Add</button>
-    <button id="btnShow" type="button">Show all</button>
-    <ul>
+    <label for="rating">Rating: &nbsp;</label>
+    <input id="rating" type="text" tabindex="2" placeholder="Rating">
+    <br>
+    <button id="btnAdd" type="button" tabindex="3">Add Movie</button>
+    <button id="btnShow" type="button" tabindex="4">show movies</button>
+
+    <br />
+    <br />
+    <ul id="mainMovieList">
         <span id="printHere"></span>
     </ul>
+
+    <!-- JQuery:  cdn version load after page items -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+    <!-- local version:  -->
+    <script>window.jQuery || document.write('<script src="JQueryLocal/jQuery_v3.3.3.js"><\/script>');</script>
+
     <script src="movie.js"></script>
     <script src="main.js"></script>
 </body>
