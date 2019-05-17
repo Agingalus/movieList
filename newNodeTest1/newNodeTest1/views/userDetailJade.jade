@@ -1,0 +1,37 @@
+extends layout
+block content
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
+  script(language='JavaScript').
+    function updateuser() {
+      var oldname =  document.getElementById('oldname').innerHTML;
+      var whoName = document.getElementById('name').value;
+      var whoEmail = document.getElementById('email').value;
+      var who_id = document.getElementById('_id').value;
+      // sending all 3 values in json object, even though only using email
+      dataObject = { "username": whoName, "email": whoEmail, _id: who_id};
+      //dataObject = { "email": whoEmail};
+      $.ajax({
+        url:'/updateuser/' + oldname,  // putting the username in the URL for the PUT method
+        method:'PUT',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(dataObject),
+        success: function(result) {
+                alert("success");
+                 window.location.href = '/userlist/';
+            }
+
+      });
+    }
+
+
+  h2.
+    User Details
+  p Current Name
+  p#oldname #{userdetail.username}
+  input(id='name', name='editName',value='#{userdetail.username}')
+  input(id='email', name='editEmail',value='#{userdetail.email}')
+  input(id='_id', name='edit_id',value='#{userdetail._id}')
+    
+  input(type='button', value='Update', onclick='updateuser()')    
+

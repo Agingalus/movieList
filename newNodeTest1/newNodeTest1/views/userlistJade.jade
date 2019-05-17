@@ -1,0 +1,31 @@
+
+
+
+extends layout
+block content
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
+  script(language='JavaScript').
+    function deleteuser() {
+      var who = document.getElementById('userToDelete').value;
+      document.getElementById('userToDelete').value= "";
+      $.ajax({
+         method: "DELETE",
+         url: "/deleteUser/" + who,
+         success: function(result) {
+           console.log(result);
+            window.location.href = '/userlist/';
+         }
+      })
+    }
+  h2.
+    User List
+  ul
+    each user, i in userlist                              
+      li
+        a(href="/finduser/#{user.username}")= user.username
+  
+  h2.
+    Delete users here
+  input(type='text', name='userToDelete', id='userToDelete' placeholder="enter user to delete")
+  input(type='button', value='Submit', onclick='deleteuser()')
+        
