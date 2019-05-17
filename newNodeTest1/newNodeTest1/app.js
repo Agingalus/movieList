@@ -37,8 +37,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // new code from example
 const port = 3000;
 MongoClient.connect(mongoUrl, option, (err, database) => {
-    if (err) return console.log(err)
-    let db = database.db("Prog219DB")
+    if (err) return console.log(err);
+    let db = database.db("Prog219DB");
     require("./routes/index")(app, db);
     // require('./routes/users')
     // app.use('/', routes);
@@ -48,4 +48,4 @@ MongoClient.connect(mongoUrl, option, (err, database) => {
         console.log("Web server is live on " + port);
     });
 
-})
+});

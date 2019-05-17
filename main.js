@@ -18,11 +18,9 @@ function hi() {
         // alert user to error
         window.alert("Data Entry Error:  Movie title must not be empty and the rating must be an integer between 1 and 5 inclusive. Movie data can not be added.");
     }
-
     // per spec, always blank out selections.
     userMovie.val("");
     userRating.val("");
-
 }
 $("#btnShow").click(function() {
     movieArray.sort(function(a, b) { return b.rating - a.rating; });
