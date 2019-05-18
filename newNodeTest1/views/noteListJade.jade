@@ -1,6 +1,7 @@
 
 
 
+
 extends layout
 block content
   script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
@@ -20,9 +21,9 @@ block content
   h2.
     User List
   ul
-    each user, i in userlist                              
+    each note, i in noteList                              
       li
-        a(href="/finduser/#{user.username}")= user.username
+        a(href="/finduser/#{note.Subject}")= note.Subject
   
   h2.
     Delete users here

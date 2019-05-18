@@ -7,8 +7,8 @@ var bodyParser = require("body-parser");
 
 let option = { useNewUrlParser: true }; // new
 const MongoClient = require("mongodb").MongoClient;
-const mongoUrl = "mongodb+srv://BCstudent:BCstudentPW@kurtcluster-du4fk.mongodb.net/test?retryWrites=true";
-//const mongoUrl = "mongodb+srv://myUser:myUser@cluster0-0dem7.mongodb.net/test?retryWrites=true"
+//const mongoUrl = "mongodb+srv://BCstudent:BCstudentPW@kurtcluster-du4fk.mongodb.net/test?retryWrites=true";
+const mongoUrl = "mongodb+srv://myUser:myUser@cluster0-0dem7.mongodb.net/test?retryWrites=true";
 
 
 // pull in our to files with 2 families of route (get, put, etc)
