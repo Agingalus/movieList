@@ -1,7 +1,7 @@
 extends layout
 block content
   h3=title
-    form#formFindUser(name="finduser",method="post",action="/finduser")
-      input#inputUserName(type="text", placeholder="username", name="username")
+    form#formFindNote(name="findNote",method="post",action="/findNote")
+      input#inputNoteSubject(type="text", placeholder="Note Subject", name="noteSubject")
       button#btnSubmit(type="submit") submit
 

@@ -21,10 +21,10 @@ module.exports = function(app, db) {
 
     /* GET New User page. */
     app.get('/newNote', function(req, res) {
-        res.render('newNoteJade', { title: 'Add New User' });
+        res.render('newNoteJade', { title: 'Add New Note' });
     });
 
-    app.post('/adduser', (req, res) => {
+    app.post('/addNote', (req, res) => {
         const note = {
             Subject: req.body.Subject,
             Priority: req.body.Priority,
@@ -44,45 +44,45 @@ module.exports = function(app, db) {
 
     // form to let user enter name to get details
     app.get('/noteBySubject/', function(req, res) {
-        res.render('noteBySubjectJade', { title: 'Search data by use name' });
+        res.render('noteBySubjectJade', { title: 'Search data by note subject' });
     });
 
-    app.post('/finduser', (req, res) => {
-        const details = { username: req.body.username };
+    app.post('/findNote', (req, res) => {
+        const details = { Subject: req.body.noteSubject };
         db.collection('Notes').findOne(details, (err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred :(' });
             } else {
                 console.log(item);
                 if (item == null) { // if there is no such name, don;t just crash the client side code
-                    item = { username: 'no such user', email: "" }
+                    item = { Subject: 'no such note', Description: "", Priority: "" }
                 }
-                res.render('userDetailJade', {
-                    "userdetail": item
+                res.render('noteDetailJade', {
+                    "noteDetail": item
                 });
             }
         });
     });
 
-    app.delete('/deleteUser/:bid', (req, res) => {
-        const theName = req.params.bid;
-        console.log(theName);
+    app.delete('/deleteNote/:bid', (req, res) => {
+        const theSubject = req.params.bid;
+        console.log(theSubject);
         //const details = { '_id': new ObjectID(id) };  not using the _id
-        const which = { 'username': theName }; // delete by username
-        db.collection('UserCollection').deleteOne(which, (err, item) => {
+        const which = { 'Subject': theSubject }; // delete by subject
+        db.collection('Notes').deleteOne(which, (err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred :(' });
             } else {
-                res.send('Note ' + theName + ' deleted!');
+                res.send('Note ' + theSubject + ' deleted!');
             }
         });
     });
 
     app.put('/updateNote/:id', (req, res) => {
-        const who_id = req.params.id;
+        const what_id = req.params.id;
         const note = req.body;
         const newSubject = note.Subject;
-        const newDiscription = note.Discription;
+        const newDescription = note.Description;
         const newPriority = note.Priority
             //const details = { '_id': new ObjectID(who_id) };  // not going to try and update by _id
             // wierd bson datatype add complications
@@ -91,7 +91,7 @@ module.exports = function(app, db) {
         //db.collection('UserCollection').updateOne({ username: who_id }, { $set: { "email": newEmail, "title": newTitle } }, (err, result) => {
 
         // updating just email using name as key
-        db.collection('Notes').updateOne({ Subject: who_id }, { $set: { "Subject": newSubject, "Description": newDiscription, "Priority": newPriority } }, (err, result) => {
+        db.collection('Notes').updateOne({ Subject: what_id }, { $set: { "Subject": newSubject, "Description": newDescription, "Priority": newPriority } }, (err, result) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
             } else {

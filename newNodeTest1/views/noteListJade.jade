@@ -6,27 +6,27 @@ extends layout
 block content
   script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
   script(language='JavaScript').
-    function deleteuser() {
-      var who = document.getElementById('userToDelete').value;
-      document.getElementById('userToDelete').value= "";
+    function deleteNote() {
+      var who = document.getElementById('noteToDelete').value;
+      document.getElementById('noteToDelete').value= "";
       $.ajax({
          method: "DELETE",
-         url: "/deleteUser/" + who,
+         url: "/deleteNote/" + who,
          success: function(result) {
            console.log(result);
-            window.location.href = '/userlist/';
+            window.location.href = '/noteList/';
          }
       })
     }
   h2.
-    User List
+    Note List
   ul
     each note, i in noteList                              
       li
-        a(href="/finduser/#{note.Subject}")= note.Subject
+        a(href="/findNote/#{note.Subject}")= note.Subject
   
   h2.
-    Delete users here
-  input(type='text', name='userToDelete', id='userToDelete' placeholder="enter user to delete")
-  input(type='button', value='Submit', onclick='deleteuser()')
+    Delete Note here
+  input(type='text', name='noteToDelete', id='noteToDelete' placeholder="enter note to delete")
+  input(type='button', value='Submit', onclick='deleteNote()')
         
