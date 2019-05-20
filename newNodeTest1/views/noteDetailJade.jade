@@ -30,9 +30,10 @@ block content
     User Details
   p Current Subject
   p#oldSubject #{noteDetail.Subject}
+  input(id='Priority', Subject='editPriority',value='#{noteDetail.Priority}')
   input(id='Subject', Subject='editSubject',value='#{noteDetail.Subject}')
   input(id='Description', Subject='editDescription',value='#{noteDetail.Description}')
-  input(id='Priority', Subject='editPriority',value='#{noteDetail.Priority}')
+  
   input(id='_id', Subject='edit_id',value='#{noteDetail._id}')
     
   input(type='button', value='Update', onclick='updateNote()')    
