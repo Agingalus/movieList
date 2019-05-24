@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Note App</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/my.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.js"></script>
+</head>
+
+<body>
+    <!-- first page -->
+    <div data-role="page" id="home">
+        <!-- header -->
+        <div data-theme="a" data-role="header">
+            <h3>The Notes App</h3>
+            <h4>Home Page</h4>
+            <a href="#second" class="ui-btn-right">Next</a>
+        </div>
+
+        <div data-role="content">
+            <!-- body display list of notes -->
+            <div data-role="listview" data-autodividers="true" data-theme="c" id="noteDisplay">
+            </div>
+            <br>
+            <a href="#addPage" class="ui-btn" data-transition="flip">Go to Add Note Page</a>
+            <br>
+            <h5>To delete a note, copy the product name then paste after clicking next link.</h5>
+            <a href="#deletePage" class="ui-btn" data-transition="flip">Go to Delete Page</a>
+
+        </div>
+        <!-- footer -->
+        <div data-role="footer">
+            <h1><i>&copy;Aaron&Cary 2019</i></h1>
+        </div>
+    </div>
+
+    <!-- second page -->
+    <div data-role="page" id="details-page">
+        <!-- header -->
+        <div data-theme="a" data-role="header">
+            <h3>The Notes App</h3>
+            <h4>Details Page</h4>
+            <a href="#home" class="ui-btn-left">Back</a>
+        </div>
+        <!-- body -->
+        <div data-role="content">
+
+            <p id="detailParmHere" hidden>change1</p>
+            <p id="showdata">change2</p>
+        </div>
+        <!-- footer -->
+        <div data-role="footer">
+            <h1><i>&copy;Aaron&Cary 2019</i></h1>
+        </div>
+    </div>
+
+    <!-- 3rd page  -->
+
+    <div data-role="page" id="addPage" data-theme="c">
+        <!-- header -->
+        <div data-role="header">
+            <h3>The Notes App</h3>
+            <h4>Add Page</h4>
+        </div>
+        <!-- body -->
+        <div data-role="main" class="ui-content">
+            <div>
+                <h2>Add a new Note</h2>
+                Priority: <input type="text" id="newPriority" size="25" />
+                <br /> Subject: <input type="text" id="newSubject" size="60" />
+                <br /> Description: <input type="text" id="newDescription" size="5" /> <br />
+                <input type="button" value="Add New Note" onclick="addItem();" />
+            </div>
+            <script type="text/javascript">
+                function addItem() {
+                    var newPriority = $("#newPriority").val();
+                    var newSubject = $("#newSubject").val();
+                    var newDescription = parseInt($("#newDescription").val());
+                    var newNote = {
+                        Priority: newPriority,
+                        Subject: newSubject,
+                        Description: newDescription
+                    };
+                    $.ajax({
+                        url: "/addNote/",
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(newNote)
+                    });
+                }
+            </script>
+
+
+            <a href="#home" class="ui-btn" data-transition="flip" data-rel="back">Go Back</a>
+
+        </div>
+        <!-- footer -->
+        <div data-role="footer">
+            <h1><i>&copy;Aaron&Cary 2019</i></h1>
+        </div>
+    </div>
+
+    <!-- 4th page -->
+    <div data-role="page" id="deletePage" data-theme="d">
+        <div data-role="header">
+            <h3>The Notes App</h3>
+            <h4>Delete Page</h4>
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <div>
+                <h2>Delete a Note by Subject</h2>
+                <input type="text" id="deleteSubjectName" size="25" />
+                <input type="button" value="Delete" onclick="deleteNote();" />
+            </div>
+
+            <a href="#home" class="ui-btn" data-transition="flip" data-rel="back">Go Back</a>
+
+        </div>
+
+        <div data-role="footer">
+            <h1><i>&copy;Aaron&Cary 2019</i></h1>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

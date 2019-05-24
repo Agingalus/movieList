@@ -3,21 +3,35 @@ module.exports = function(app, db) {
 
     /* GET New User page. */
     app.get('/', function(req, res) {
-        res.render('welcomeJade');
+        res.sendFile('mySpa.html', { root: __dirname });
     });
 
     app.get('/noteList', async function(req, res) {
         try {
             var doc = await db.collection('Notes').find().toArray();
             //var doc = await db.collection('UserCollection').find().toArray();
-            res.render('noteListJade', {
-                "noteList": doc
-            });
+            // res.render('noteListJade', {
+            //     "noteList": doc
+            // });
+            //notes.sort(compare);
+            console.log(doc[0]);
+            res.send(doc);
         } catch (err) {
             console.log('get all failed');
             console.error(err);
         }
     });
+
+    function compare(a, b) {
+        if (a.Priority < b.Priority) {
+            return -1;
+        }
+        if (a.Priority > b.Priority) {
+            return 1;
+        }
+        return 0;
+    };
+
 
     /* GET New User page. */
     app.get('/newNote', function(req, res) {
@@ -42,10 +56,10 @@ module.exports = function(app, db) {
         });
     });
 
-    // form to let user enter name to get details
-    app.get('/noteBySubject/', function(req, res) {
-        res.render('noteBySubjectJade', { title: 'Search data by note subject' });
-    });
+    // // form to let user enter name to get details
+    // app.get('/noteBySubject/', function(req, res) {
+    //     res.render('noteBySubjectJade', { title: 'Search data by note subject' });
+    // });
 
     app.post('/findNote', (req, res) => {
         const details = { Subject: req.body.noteSubject };
@@ -57,9 +71,10 @@ module.exports = function(app, db) {
                 if (item == null) { // if there is no such name, don;t just crash the client side code
                     item = { Subject: 'no such note', Description: "", Priority: "" }
                 }
-                res.render('noteDetailJade', {
-                    "noteDetail": item
-                });
+                // res.render('noteDetailJade', {
+                //     "noteDetail": item
+                //});
+                res.send(item);
             }
         });
     });
