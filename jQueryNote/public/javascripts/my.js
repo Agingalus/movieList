@@ -2,12 +2,17 @@
 
 $(document).on("pagebeforeshow ", "#home", function() {
     var info_view = ""; //string to put HTML in
-    //$("#noteDisplay").empty(); // since I do this everytime the page is redone, I need to remove existing before apending them all again
+    $("#noteDisplay").empty(); // since I do this everytime the page is redone, I need to remove existing before apending them all again
     $.getJSON("./noteList/") //Send an AJAX request
         .done(function(data) {
             $.each(data, function(index, record) { // make up each li as an <a> to the details-page
-                $("#noteDisplay").append("<li>" + record.Priority + record.Subject + record.Description + "</li>");
+                $("#noteDisplay").append("<li><a data-parm='" + record.Subject + "'  href='#details-page'>" + record.Subject + "</a></li>");
             });
+            // $.each(data, function(index, record) { // make up each li as an <a> to the details-page
+            //     $("#noteDisplay").append("<li>Priorty:" + record.Priority + "<br/>" +
+            //         "Subject:" + record.Subject + "<br/>" + "Description:" + record.Description + "</li>");
+            // });
+
 
             $("#noteDisplay").listview("refresh"); // need this so jquery mobile will apply the styling to the newly added li's
 
@@ -31,9 +36,10 @@ $(document).on("pagebeforeshow", "#details-page", function() {
         .done(function(data) {
             textString = "Priority: " + data.Priority + "\n Subject: " + data.Subject + "\n Description: " + data.Description;
             $("#showdata").text(textString);
+
         })
         .fail(function(jqXHR, textStatus, err) {
-            textString = "could not find";
+            textString = "Sorry! Could not find it :(";
             $("#showdata").text(textString);
         });
 

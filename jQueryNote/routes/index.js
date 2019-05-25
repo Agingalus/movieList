@@ -61,10 +61,12 @@ module.exports = function(app, db) {
     //     res.render('noteBySubjectJade', { title: 'Search data by note subject' });
     // });
 
-    app.post('/findNote', (req, res) => {
-        const details = { Subject: req.body.noteSubject };
-        db.collection('Notes').findOne(details, (err, item) => {
+    app.get('/findNote/:id', (req, res) => {
+        //var subject = req.params.id;
+        const subject = { Subject: req.body.noteSubject };
+        db.collection('Notes').findOne(subject, (err, item) => {
             if (err) {
+                console.log(err);
                 res.send({ 'error': 'An error has occurred :(' });
             } else {
                 console.log(item);
