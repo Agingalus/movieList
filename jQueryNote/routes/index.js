@@ -13,8 +13,8 @@ module.exports = function(app, db) {
             // res.render('noteListJade', {
             //     "noteList": doc
             // });
-            //notes.sort(compare);
-            console.log(doc[0]);
+            doc.sort(compare);
+
             res.send(doc);
         } catch (err) {
             console.log('get all failed');
@@ -63,7 +63,9 @@ module.exports = function(app, db) {
 
     app.get('/findNote/:id', (req, res) => {
         //var subject = req.params.id;
-        const subject = { Subject: req.body.noteSubject };
+        //const subject = { Subject: req.body.noteSubject };
+        var subject = { Subject: req.params.id };
+        console.log("this is the subject " + subject);
         db.collection('Notes').findOne(subject, (err, item) => {
             if (err) {
                 console.log(err);

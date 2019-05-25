@@ -34,8 +34,8 @@ $(document).on("pagebeforeshow", "#details-page", function() {
     var id = $("#detailParmHere").text();
     $.getJSON("/findNote/" + id)
         .done(function(data) {
-            textString = "Priority: " + data.Priority + "\n Subject: " + data.Subject + "\n Description: " + data.Description;
-            $("#showdata").text(textString);
+            textString = "Priority: " + data.Priority + "<br> Subject: " + data.Subject + "<br>Description: " + data.Description;
+            $("#showdata").html(textString);
 
         })
         .fail(function(jqXHR, textStatus, err) {
@@ -49,11 +49,11 @@ $(document).on("pagebeforeshow", "#details-page", function() {
 
 $(document).on("pagebeforeshow", "#deletePage", function() {
 
-    $("#deleteNoteSubject").val("");
+    $("#deleteSubjectName").val("");
 });
 
 function deleteNote() {
-    var note = $("#deleteNoteSubject").val();
+    var note = $("#deleteSubjectName").val();
     $.ajax({
         url: "/deleteProduct/" + note,
         type: "DELETE",
@@ -77,7 +77,7 @@ $(document).on("pagebeforeshow", "#addPage", function() {
 function addItem() {
     var newPriority = $("#newPriority").val();
     var newSubject = $("#newSubject").val();
-    var newDescription = parseInt($("#newDescription").val());
+    var newDescription = $("#newDescription").val();
     var newNote = { Priority: newPriority, Subject: newSubject, Description: newDescription };
 
     $.ajax({

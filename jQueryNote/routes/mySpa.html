@@ -71,28 +71,9 @@
                 <h2>Add a new Note</h2>
                 Priority: <input type="text" id="newPriority" size="25" />
                 <br /> Subject: <input type="text" id="newSubject" size="60" />
-                <br /> Description: <input type="text" id="newDescription" size="5" /> <br />
+                <br /> Description: <input type="text" id="newDescription" size="60" /> <br />
                 <input type="button" value="Add New Note" onclick="addItem();" />
             </div>
-            <script type="text/javascript">
-                function addItem() {
-                    var newPriority = $("#newPriority").val();
-                    var newSubject = $("#newSubject").val();
-                    var newDescription = parseInt($("#newDescription").val());
-                    var newNote = {
-                        Priority: newPriority,
-                        Subject: newSubject,
-                        Description: newDescription
-                    };
-                    $.ajax({
-                        url: "/addNote/",
-                        type: "POST",
-                        dataType: "json",
-                        contentType: "application/json",
-                        data: JSON.stringify(newNote)
-                    });
-                }
-            </script>
 
 
             <a href="#home" class="ui-btn" data-transition="flip" data-rel="back">Go Back</a>
