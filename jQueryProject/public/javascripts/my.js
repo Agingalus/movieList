@@ -1,12 +1,15 @@
+//import { parse } from "url";
+
+/* eslint-disable linebreak-style */
 /* eslint-disable no-undef */
 
 $(document).on("pagebeforeshow ", "#home", function() {
     var info_view = ""; //string to put HTML in
-    $("#noteDisplay").empty(); // since I do this everytime the page is redone, I need to remove existing before apending them all again
-    $.getJSON("./noteList/") //Send an AJAX request
+    $("#workDisplay").empty(); // since I do this everytime the page is redone, I need to remove existing before apending them all again
+    $.getJSON("./workList/") //Send an AJAX request
         .done(function(data) {
             $.each(data, function(index, record) { // make up each li as an <a> to the details-page
-                $("#noteDisplay").append("<li><a data-parm='" + record.Subject + "'  href='#details-page'>" + record.Subject + "</a></li>");
+                $("#workDisplay").append("<li><a data-parm='" + record.WorkType + "'  href='#details-page'>" + record.WorkType + "</a></li>");
             });
             // $.each(data, function(index, record) { // make up each li as an <a> to the details-page
             //     $("#noteDisplay").append("<li>Priorty:" + record.Priority + "<br/>" +
@@ -14,7 +17,7 @@ $(document).on("pagebeforeshow ", "#home", function() {
             // });
 
 
-            $("#noteDisplay").listview("refresh"); // need this so jquery mobile will apply the styling to the newly added li's
+            $("#workDisplay").listview("refresh"); // need this so jquery mobile will apply the styling to the newly added li's
 
             $("a").on("click", function(event) { // set up an event, if user clicks any, it writes that items data-parm into the details page's html so I can get it there
                 var parm = $(this).attr("data-parm");
@@ -31,10 +34,20 @@ $(document).on("pagebeforeshow ", "#home", function() {
 $(document).on("pagebeforeshow", "#details-page", function() {
 
     var textString = "fix me";
+    // let theDateEntered = new Date();
+    // let stringDate;
     var id = $("#detailParmHere").text();
-    $.getJSON("/findNote/" + id)
+    $.getJSON("/findWork/" + id)
         .done(function(data) {
-            textString = "Priority: " + data.Priority + "<br> Subject: " + data.Subject + "<br> Description: " + data.Description;
+            // theDateEntered = data.DateEntered;
+            // stringDate = theDateEntered.toTimeString();
+            textString = "Name: " + data.Name + "<br> WorkType: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
+                "<br> Start: " + data.Start +
+                "<br> End: " + data.End +
+                "<br> TotalTime: " + data.TotalTime +
+                "<br> PerHour: " + data.PerHour +
+                "<br> TotalPay: $" + data.TotalPay +
+                "<br> DateWorked: " + data.DateWorked;
             $("#showdata").html(textString);
 
         })
@@ -49,17 +62,19 @@ $(document).on("pagebeforeshow", "#details-page", function() {
 
 $(document).on("pagebeforeshow", "#deletePage", function() {
 
-    $("#deleteSubjectName").val("");
+    $("#deleteWorkType").val("");
 });
 
-function deleteNote() {
-    var note = $("#deleteSubjectName").val();
+function deleteWork() {
+    var note = $("#deleteWorkType").val();
+    $("#deleteWorkType").val("");
+
     $.ajax({
-        url: "/deleteNote/" + note,
+        url: "/deleteWork/" + note,
         type: "DELETE",
         contentType: "application/json",
         success: function(response) {
-            alert("The note successfully deleted in cloud");
+            alert("The work successfully deleted in cloud");
         },
         error: function(response) {
             alert("ERROR: Note NOT deleted in cloud");
@@ -69,26 +84,163 @@ function deleteNote() {
 
 // clears the fields
 $(document).on("pagebeforeshow", "#addPage", function() {
-    $("#newPriority").val("");
-    $("#newSubject").val("");
-    $("#newDescription").val("");
+    $("#newName").val("");
+    $("#newWorkType").val("");
+    $("#newDateEntered").val("");
+    $("#newStart").val("");
+    $("#newEnd").val("");
+    $("#newTotalTime").val("");
+    $("#newPerHour").val("");
+    $("#newTotalPay").val("");
+    $("#newDateWorked").val("");
+
 });
 
 function addItem() {
-    var newPriority = $("#newPriority").val();
-    var newSubject = $("#newSubject").val();
-    var newDescription = $("#newDescription").val();
-    var newNote = { Priority: newPriority, Subject: newSubject, Description: newDescription };
-    $("#newPriority").val("");
-    $("#newSubject").val("");
-    $("#newDescription").val("");
+    var date = new Date();
+    var timestamp = date.getTime();
+    //var timestampString = timestamp.toString();
+
+    var newName = $("#newName").val();
+    var newWorkType = $("#newWorkType").val();
+    var newStart = $("#newStart").val();
+    var newEnd = $("#newEnd").val();
+    var newTotalTime = $("#newTotalTime").val();
+    var newPerHour = $("#newPerHour").val();
+    //var newTotalPay = $("#TotalPay").val();
+    var newDateWorked = $("#newDateWorked").val();
+    var newWork = {
+        Name: newName,
+        WorkType: newWorkType,
+        DateEntered: timestamp, //Date.now(),
+        Start: newStart,
+        End: newEnd,
+        TotalTime: newTotalTime,
+        PerHour: newPerHour,
+        TotalPay: newPerHour * newTotalTime,
+        DateWorked: newDateWorked
+
+    };
+    $("#newName").val("");
+    $("#newWorkType").val("");
+    $("#newDateEntered").val("");
+    $("#newStart").val("");
+    $("#newEnd").val("");
+    $("#newTotalTime").val("");
+    $("#newPerHour").val("");
+    $("#newTotalPay").val("");
+    $("#newDateWorked").val("");
+
 
     $.ajax({
-        url: "/addNote/",
+        url: "/addWork/",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(newNote)
+        data: JSON.stringify(newWork)
     });
 
+}
+$(document).on("pagebeforeshow", "#updatePage", function() {
+
+    var textString = "fix me";
+    // let theDateEntered = new Date();
+    // let stringDate;
+    var id = $("#detailParmHere").text();
+    $.getJSON("/findWork/" + id)
+        .done(function(data) {
+            //var parm = $(this).attr("data-parm");
+            //do something here with parameter on  details page
+            //$("#detailUpdateParmHere").html(parm);
+
+            $("#updateName").val(data.Name);
+            $("#updateWorkType").val(data.WorkType);
+            $("#updateDateEntered").val(data.DateEntered);
+            $("#updateStart").val(data.Start);
+            $("#updateEnd").val(data.End);
+            $("#updateTotalTime").val(data.TotalTime);
+            $("#updatePerHour").val(data.PerHour);
+            $("#updateTotalPay").val(data.TotalPay);
+            $("#updateDateWorked").val(data.DateWorked);
+            // theDateEntered = data.DateEntered;
+            // stringDate = theDateEntered.toTimeString();
+            // textString = "<br /> Start: <input type='text' id='updateStart' size='60' value='' />" + "<br> WorkType: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
+            //     "<br> Start: " + data.Start +
+            //     "<br> End: " + data.End +
+            //     "<br> TotalTime: " + data.TotalTime +
+            //     "<br> PerHour: " + data.PerHour +
+            //     "<br> TotalPay: $" + data.TotalPay +
+            //     "<br> DateWorked: " + data.DateWorked;
+            // $("#showdata").html(textString);
+
+
+        })
+        .fail(function(jqXHR, textStatus, err) {
+            textString = "Sorry! Could not find it :(";
+            $("#showdata").text(textString);
+        });
+
+
+
+});
+
+
+function updateItem() {
+    var id = $("#detailParmHere").text();
+    // var date = new Date();
+    // var timestamp = date.getTime();
+    //var timestampString = timestamp.toString();
+
+    var updateName = $("#updateName").val();
+    var updateWorkType = $("#updateWorkType").val();
+    var updateStart = $("#updateStart").val();
+    var updateEnd = $("#updateEnd").val();
+    var updateTotalTime = $("#updateTotalTime").val();
+    var updatePerHour = $("#updatePerHour").val();
+    //var updateTotalPay = $("#TotalPay").val();
+    var updateDateWorked = $("#updateDateWorked").val();
+    var updateWork = {
+        Name: updateName,
+        WorkType: updateWorkType,
+        //DateEntered: Date.now(),
+        Start: updateStart,
+        End: updateEnd,
+        TotalTime: updateTotalTime,
+        PerHour: updatePerHour,
+        TotalPay: updatePerHour * updateTotalTime,
+        DateWorked: updateDateWorked
+
+    };
+    $("#updateName").val("");
+    $("#updateWorkType").val("");
+    $("#updateDateEntered").val("");
+    $("#updateStart").val("");
+    $("#updateEnd").val("");
+    $("#updateTotalTime").val("");
+    $("#updatePerHour").val("");
+    $("#updateTotalPay").val("");
+    $("#updateDateWorked").val("");
+
+
+    $.ajax({
+        url: "/updateWork/" + id,
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(updateWork)
+    });
+
+}
+
+function timeConverter(UNIX_timestamp) {
+    var a = new Date(UNIX_timestamp); //* 1000);
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    // var hour = a.getHours();
+    // var min = a.getMinutes();
+    // var sec = a.getSeconds();
+    var time = date + " " + month + " " + year; //+ " " + hour + ":" + min + ":" + sec;
+    return time;
 }
