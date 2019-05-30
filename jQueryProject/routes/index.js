@@ -39,21 +39,21 @@ module.exports = function(app, db) {
     // });
 
     app.post('/addWork', (req, res) => {
-        const note = {
+        const work = {
             Name: req.body.Name,
             WorkType: req.body.WorkType,
             DateEntered: req.body.DateEntered,
             Start: req.body.Start,
             End: req.body.End,
-            TotalTime: req.body.TotalTime,
+            TotalTime: getTotalTime(req.body.Start, req.body.End),
             PerHour: req.body.PerHour,
-            TotalPay: req.body.TotalPay,
+            TotalPay: getTotalTime(req.body.Start, req.body.End) * req.body.PerHour,
             DateWorked: req.body.DateWorked,
 
             //username: req.body.username,
             //email: req.body.useremail
         };
-        db.collection('Work').insertOne(note, (err, result) => {
+        db.collection('Work').insertOne(work, (err, result) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
             } else {
@@ -115,18 +115,18 @@ module.exports = function(app, db) {
 
     app.put('/updateWork/:id', (req, res) => {
         //var workType = { WorkType: req.params.id }
-        const what_id = req.params.id;
-        const work = req.body;
-        const updateName = work.Name;
-        const updateWorkType = work.WorkType;
-        //const updateDateEntered = work.DateEntered;
-        const updateStart = work.Start;
-        const updateEnd = work.End;
-        const updateTotalTime = work.TotalTime;
-        const updatePerHour = work.PerHour;
-        const updateTotalPay = work.TotalPay;
-        const updateDateWorked = work.DateWorked;
-        //const details = { '_id': new ObjectID(who_id) };  // not going to try and update by _id
+        let what_id = req.params.id;
+        let work = req.body;
+        let updateName = work.Name;
+        let updateWorkType = work.WorkType;
+        //let updateDateEntered = work.DateEntered;
+        let updateStart = work.Start;
+        let updateEnd = work.End;
+        let updateTotalTime = getTotalTime(work.Start, work.End);
+        let updatePerHour = work.PerHour;
+        let updateTotalPay = updateTotalTime * work.PerHour;
+        let updateDateWorked = work.DateWorked;
+        //let details = { '_id': new ObjectID(who_id) };  // not going to try and update by _id
         // wierd bson datatype add complications
 
         // if uddating more than one field: 
@@ -141,9 +141,10 @@ module.exports = function(app, db) {
                 Start: updateStart,
                 End: updateEnd,
                 PerHour: updatePerHour,
+                TotalTime: updateTotalTime,
                 TotalPay: updateTotalPay,
-                DateWorked: updateDateWorked,
-                TotalTime: updateTotalTime
+                DateWorked: updateDateWorked
+
 
             }
         }, (err, result) => {
@@ -189,6 +190,42 @@ module.exports = function(app, db) {
 
 
 }; // end of mod exports
+
+function parseTime(fullTime) {
+
+    let hour = parseFloat(fullTime.substring(0, 2));
+    let min = parseFloat(fullTime.substring(3, 5));
+    return { hh: hour, mm: min };
+}
+
+function getTotalTime(start, end) {
+    let startObj = parseTime(start);
+    let endObj = parseTime(end);
+    let totalTime = { hh: 0, mm: 0 };
+    let returnTime;
+
+    if (endObj.hh < startObj.hh) {
+        endObj.hh += 24;
+    }
+    if (endObj.mm < startObj.mm) {
+        endObj.hh--;
+        endObj.mm += 60;
+    }
+    totalTime.hh = endObj.hh - startObj.hh;
+    totalTime.mm = endObj.mm - startObj.mm;
+    totalTime.mm = totalTime.mm / 60;
+
+    returnTime = totalTime.hh + totalTime.mm;
+    console.log(returnTime);
+    return returnTime;
+    //return 1;
+    //return totalTime.hh;
+
+
+
+
+}
+
 /*
             Name
             WorkType

@@ -37,6 +37,7 @@
         </div>
     </div>
 
+
     <!-- second page  detail-->
     <div data-role="page" id="details-page">
         <!-- header -->
@@ -47,6 +48,7 @@
         </div>
         <!-- body -->
         <div data-role="content">
+            <a href="#home" class="ui-btn" data-transition="flip"><button type="button" onclick="deleteWorkDetails();">Delete</button></a>
 
             <button><a href="#updatePage" class="ui-btn" data-transition="flip">Go to Update Page</a></button>
 
@@ -59,7 +61,7 @@
         </div>
     </div>
 
-    <!-- 3rd page  -->
+    <!-- 3rd page  add-->
 
     <div data-role="page" id="addPage" data-theme="c">
         <!-- header -->
@@ -76,12 +78,12 @@
                 Name: <input type="text" id="newName" size="60" />
                 <br /> WorkType: <input type="text" id="newWorkType" size="60" /> <br />
                 <!-- <br /> DateEntered: <input type="text" id="newDateEntered" size="60" /> -->
-                <br /> Start: <input type="text" id="newStart" size="60" />
-                <br /> End: <input type="text" id="newEnd" size="60" />
-                <br /> TotalTime: <input type="text" id="newTotalTime" size="60" />
+                <br /> Start: <input type="time" id="newStart" />
+                <br /> End: <input type="time" id="newEnd" />
+                <!-- <br /> TotalTime: <input type="text" id="newTotalTime" size="60" /> -->
                 <br /> PerHour: <input type="text" id="newPerHour" size="60" />
                 <!-- <br /> TotalPay: <input type="text" id="newTotalPay" size="60" /> -->
-                <br /> DateWorked: <input type="text" id="newDateWorked" size="60" />
+                <br /> DateWorked: <input type="date" id="newDateWorked" />
 
                 <input type="button" value="Add New Work" onclick="addItem();" />
             </div>
@@ -96,7 +98,7 @@
         </div>
     </div>
 
-    <!-- 4th page -->
+    <!-- 4th page delete-->
     <div data-role="page" id="deletePage" data-theme="d">
         <div data-role="header">
             <h3>The Work App</h3>
@@ -133,14 +135,14 @@
                 Name: <input type="text" id="updateName" size="60" />
                 <br /> WorkType: <input type="text" id="updateWorkType" size="60" /> <br />
                 <!-- <br /> DateEntered: <input type="text" id="updateDateEntered" size="60" /> -->
-                <br /> Start: <input type="text" id="updateStart" size="60" />
-                <br /> End: <input type="text" id="updateEnd" size="60" />
-                <br /> TotalTime: <input type="text" id="updateTotalTime" size="60" />
+                <br /> Start: <input type="time" id="updateStart" />
+                <br /> End: <input type="time" id="updateEnd" />
+                <!-- <br /> TotalTime: <input type="text" id="updateTotalTime" size="60" /> -->
                 <br /> PerHour: <input type="text" id="updatePerHour" size="60" />
                 <!-- <br /> TotalPay: <input type="text" id="updateTotalPay" size="60" /> -->
-                <br /> DateWorked: <input type="text" id="updateDateWorked" size="60" />
+                <br /> DateWorked: <input type="date" id="updateDateWorked" size="60" />
 
-                <input type="button" value="Add update Work" onclick="updateItem();" />
+                <a href="#details-page" class="ui-btn" data-transition="flip"><input type="button" value="Update Work" onclick="updateItem();" /></a>
             </div>
 
 

@@ -44,9 +44,9 @@ $(document).on("pagebeforeshow", "#details-page", function() {
             textString = "Name: " + data.Name + "<br> WorkType: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
                 "<br> Start: " + data.Start +
                 "<br> End: " + data.End +
-                "<br> TotalTime: " + data.TotalTime +
+                "<br> TotalTime: " + data.TotalTime.toFixed(2) +
                 "<br> PerHour: " + data.PerHour +
-                "<br> TotalPay: $" + data.TotalPay +
+                "<br> TotalPay: $" + data.TotalPay.toFixed(2) +
                 "<br> DateWorked: " + data.DateWorked;
             $("#showdata").html(textString);
 
@@ -66,11 +66,29 @@ $(document).on("pagebeforeshow", "#deletePage", function() {
 });
 
 function deleteWork() {
-    var note = $("#deleteWorkType").val();
+    var work = $("#deleteWorkType").val();
     $("#deleteWorkType").val("");
 
     $.ajax({
-        url: "/deleteWork/" + note,
+        url: "/deleteWork/" + work,
+        type: "DELETE",
+        contentType: "application/json",
+        success: function(response) {
+            alert("The work successfully deleted in cloud");
+        },
+        error: function(response) {
+            alert("ERROR: Note NOT deleted in cloud");
+        }
+    });
+}
+
+function deleteWorkDetails() {
+    // var id = $("#deleteWorkType").val();
+    // $("#deleteWorkType").val("");
+
+    var id = $("#detailParmHere").text();
+    $.ajax({
+        url: "/deleteWork/" + id,
         type: "DELETE",
         contentType: "application/json",
         success: function(response) {
@@ -115,9 +133,9 @@ function addItem() {
         DateEntered: timestamp, //Date.now(),
         Start: newStart,
         End: newEnd,
-        TotalTime: newTotalTime,
+        //TotalTime: getTotalTime(newStart, newEnd),
         PerHour: newPerHour,
-        TotalPay: newPerHour * newTotalTime,
+        //TotalPay: newPerHour * this.TotalTime,
         DateWorked: newDateWorked
 
     };
@@ -195,7 +213,7 @@ function updateItem() {
     var updateWorkType = $("#updateWorkType").val();
     var updateStart = $("#updateStart").val();
     var updateEnd = $("#updateEnd").val();
-    var updateTotalTime = $("#updateTotalTime").val();
+    //var updateTotalTime = $("#updateTotalTime").val();
     var updatePerHour = $("#updatePerHour").val();
     //var updateTotalPay = $("#TotalPay").val();
     var updateDateWorked = $("#updateDateWorked").val();
@@ -205,12 +223,14 @@ function updateItem() {
         //DateEntered: Date.now(),
         Start: updateStart,
         End: updateEnd,
-        TotalTime: updateTotalTime,
+        //TotalTime: getTotalTime(this.Start, this.End),
         PerHour: updatePerHour,
-        TotalPay: updatePerHour * updateTotalTime,
+        //TotalPay: updatePerHour * this.TotalTime,
         DateWorked: updateDateWorked
 
     };
+    $("#detailParmHere").html(updateWork.WorkType);
+
     $("#updateName").val("");
     $("#updateWorkType").val("");
     $("#updateDateEntered").val("");
@@ -227,7 +247,12 @@ function updateItem() {
         type: "PUT",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(updateWork)
+        data: JSON.stringify(updateWork),
+        success: function(result) {
+            //alert("success");
+            // window.location.href = "#workList";
+            //$("#detailParmHere").val(updateWork.WorkType);
+        }
     });
 
 }
@@ -244,3 +269,34 @@ function timeConverter(UNIX_timestamp) {
     var time = date + " " + month + " " + year; //+ " " + hour + ":" + min + ":" + sec;
     return time;
 }
+
+// function parseTime(fullTime) {
+
+
+
+//     let hour = parseInt(fullTime.substring(0, 2));
+//     let min = parseInt(fullTime.substring(4, 6));
+//     return { hh: hour, mm: min };
+// }
+
+// function getTotalTime(start, end) {
+//     let startObj = parseTime(start);
+//     let endObj = parseTime(end);
+//     let totalTime = { hh: 0, mm: 0 };
+
+//     if (endObj.hh < startObj.hh) {
+//         endObj.hh += 24;
+//     }
+//     if (endObj.mm < startObj.mm) {
+//         endObj.hh--;
+//         endObj.mm += 60;
+//     }
+//     totalTime.hh = endObj.hh - startObj.hh;
+//     totalTime.mm = endObj.mm - startObj.mm;
+//     totalTime.mm = totalTime.mm / 60;
+//     return totalTime.hh + totalTime.mm;
+
+
+
+
+// }
