@@ -73,12 +73,12 @@ function deleteWork() {
         url: "/deleteWork/" + work,
         type: "DELETE",
         contentType: "application/json",
-        // success: function(response) {
-        //     alert("The work successfully deleted in cloud");
-        // },
-        // error: function(response) {
-        //     alert("ERROR: Note NOT deleted in cloud");
-        // }
+        success: function(response) {
+            alert("The work successfully deleted in cloud");
+        },
+        error: function(response) {
+            alert("ERROR: Note NOT deleted in cloud");
+        }
     });
 }
 
@@ -113,6 +113,38 @@ $(document).on("pagebeforeshow", "#addPage", function() {
     $("#newDateWorked").val("");
 
 });
+
+function validData(work) {
+
+    if (work.Name === "") {
+        return false;
+
+    }
+    if (work.WorkType === "") {
+        return false;
+
+    }
+    if (work.Start === "") {
+        return false;
+
+    }
+    if (work.End === "") {
+        return false;
+
+    }
+    if (work.PerHour === "") {
+        return false;
+
+    }
+    if (work.DateWorked === "") {
+        return false;
+
+    }
+    return true;
+}
+
+
+
 
 function addItem() {
     var date = new Date();
@@ -149,14 +181,18 @@ function addItem() {
     $("#newTotalPay").val("");
     $("#newDateWorked").val("");
 
+    if (validData(newWork)) {
+        $.ajax({
+            url: "/addWork/",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(newWork)
+        });
 
-    $.ajax({
-        url: "/addWork/",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(newWork)
-    });
+    } else {
+        alert("NOPE!");
+    }
 
 }
 $(document).on("pagebeforeshow", "#updatePage", function() {
@@ -258,6 +294,9 @@ function updateItem() {
 }
 
 function timeConverter(UNIX_timestamp) {
+    // if (isNaN(UNIX_timestamp)) {
+    //     return "no date";
+    // }
     var a = new Date(UNIX_timestamp); //* 1000);
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var year = a.getFullYear();

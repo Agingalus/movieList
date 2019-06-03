@@ -13,7 +13,7 @@ module.exports = function(app, db) {
             // res.render('noteListJade', {
             //     "noteList": doc
             // });
-            //doc.sort(compare);
+            doc.sort(compare);
 
             res.send(doc);
         } catch (err) {
@@ -23,10 +23,10 @@ module.exports = function(app, db) {
     });
 
     function compare(a, b) {
-        if (a.Priority < b.Priority) {
+        if (a.WorkType < b.WorkType) {
             return -1;
         }
-        if (a.Priority > b.Priority) {
+        if (a.WorkType > b.WorkType) {
             return 1;
         }
         return 0;
@@ -82,12 +82,12 @@ module.exports = function(app, db) {
                     item = {
                         Name: "",
                         WorkType: 'no such work type',
-                        DateEntered: "",
-                        Start: "",
-                        End: "",
-                        TotalTime: "",
-                        PerHour: "",
-                        TotalPay: "",
+                        DateEntered: 0,
+                        Start: 0,
+                        End: 0,
+                        TotalTime: 0,
+                        PerHour: 0,
+                        TotalPay: 0,
                         DateWorked: ""
                     }
                 }
