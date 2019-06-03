@@ -41,13 +41,13 @@ $(document).on("pagebeforeshow", "#details-page", function() {
         .done(function(data) {
             // theDateEntered = data.DateEntered;
             // stringDate = theDateEntered.toTimeString();
-            textString = "Name: " + data.Name + "<br> WorkType: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
+            textString = "Name: " + data.Name + "<br> Work Type: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
                 "<br> Start: " + data.Start +
                 "<br> End: " + data.End +
-                "<br> TotalTime: " + data.TotalTime.toFixed(2) +
-                "<br> PerHour: " + data.PerHour +
-                "<br> TotalPay: $" + data.TotalPay.toFixed(2) +
-                "<br> DateWorked: " + data.DateWorked;
+                "<br> Total Time: " + data.TotalTime.toFixed(2) +
+                "<br> Per Hour: " + data.PerHour +
+                "<br> Total Pay: $" + data.TotalPay.toFixed(2) +
+                "<br> Date Worked: " + data.DateWorked;
             $("#showdata").html(textString);
 
         })
@@ -65,22 +65,22 @@ $(document).on("pagebeforeshow", "#deletePage", function() {
     $("#deleteWorkType").val("");
 });
 
-function deleteWork() {
-    var work = $("#deleteWorkType").val();
-    $("#deleteWorkType").val("");
+// function deleteWork() {
+//     var work = $("#deleteWorkType").val();
+//     $("#deleteWorkType").val("");
 
-    $.ajax({
-        url: "/deleteWork/" + work,
-        type: "DELETE",
-        contentType: "application/json",
-        success: function(response) {
-            alert("The work successfully deleted in cloud");
-        },
-        error: function(response) {
-            alert("ERROR: Note NOT deleted in cloud");
-        }
-    });
-}
+//     $.ajax({
+//         url: "/deleteWork/" + work,
+//         type: "DELETE",
+//         contentType: "application/json",
+//         success: function(response) {
+//             alert("The work successfully deleted in cloud");
+//         },
+//         error: function(response) {
+//             alert("ERROR: Note NOT deleted in cloud");
+//         }
+//     });
+// }
 
 function deleteWorkDetails() {
     // var id = $("#deleteWorkType").val();
@@ -91,12 +91,12 @@ function deleteWorkDetails() {
         url: "/deleteWork/" + id,
         type: "DELETE",
         contentType: "application/json",
-        success: function(response) {
-            alert("The work successfully deleted in cloud");
-        },
-        error: function(response) {
-            alert("ERROR: Note NOT deleted in cloud");
-        }
+        // success: function(response) {
+        //     alert("The work successfully deleted in cloud");
+        // },
+        // error: function(response) {
+        //     alert("ERROR: Note NOT deleted in cloud");
+        // }
     });
 }
 
@@ -216,16 +216,6 @@ $(document).on("pagebeforeshow", "#updatePage", function() {
             $("#updatePerHour").val(data.PerHour);
             $("#updateTotalPay").val(data.TotalPay);
             $("#updateDateWorked").val(data.DateWorked);
-            // theDateEntered = data.DateEntered;
-            // stringDate = theDateEntered.toTimeString();
-            // textString = "<br /> Start: <input type='text' id='updateStart' size='60' value='' />" + "<br> WorkType: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
-            //     "<br> Start: " + data.Start +
-            //     "<br> End: " + data.End +
-            //     "<br> TotalTime: " + data.TotalTime +
-            //     "<br> PerHour: " + data.PerHour +
-            //     "<br> TotalPay: $" + data.TotalPay +
-            //     "<br> DateWorked: " + data.DateWorked;
-            // $("#showdata").html(textString);
 
 
         })
@@ -241,27 +231,25 @@ $(document).on("pagebeforeshow", "#updatePage", function() {
 
 function updateItem() {
     var id = $("#detailParmHere").text();
-    // var date = new Date();
-    // var timestamp = date.getTime();
-    //var timestampString = timestamp.toString();
+
 
     var updateName = $("#updateName").val();
     var updateWorkType = $("#updateWorkType").val();
     var updateStart = $("#updateStart").val();
     var updateEnd = $("#updateEnd").val();
-    //var updateTotalTime = $("#updateTotalTime").val();
+
     var updatePerHour = $("#updatePerHour").val();
-    //var updateTotalPay = $("#TotalPay").val();
+
     var updateDateWorked = $("#updateDateWorked").val();
     var updateWork = {
         Name: updateName,
         WorkType: updateWorkType,
-        //DateEntered: Date.now(),
+
         Start: updateStart,
         End: updateEnd,
-        //TotalTime: getTotalTime(this.Start, this.End),
+
         PerHour: updatePerHour,
-        //TotalPay: updatePerHour * this.TotalTime,
+
         DateWorked: updateDateWorked
 
     };
@@ -278,18 +266,25 @@ function updateItem() {
     $("#updateDateWorked").val("");
 
 
-    $.ajax({
-        url: "/updateWork/" + id,
-        type: "PUT",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(updateWork),
-        success: function(result) {
-            //alert("success");
-            // window.location.href = "#workList";
-            //$("#detailParmHere").val(updateWork.WorkType);
-        }
-    });
+    if (validData(updateWork)) {
+
+        $.ajax({
+            url: "/updateWork/" + id,
+            type: "PUT",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(updateWork),
+            success: function(result) {
+                //alert("success");
+                // window.location.href = "#workList";
+                //$("#detailParmHere").val(updateWork.WorkType);
+            }
+        });
+    } else {
+        alert("NOPE!");
+    }
+
+
 
 }
 
