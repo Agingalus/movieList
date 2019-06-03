@@ -73,12 +73,12 @@ function deleteWork() {
         url: "/deleteWork/" + work,
         type: "DELETE",
         contentType: "application/json",
-        success: function(response) {
-            alert("The work successfully deleted in cloud");
-        },
-        error: function(response) {
-            alert("ERROR: Note NOT deleted in cloud");
-        }
+        // success: function(response) {
+        //     alert("The work successfully deleted in cloud");
+        // },
+        // error: function(response) {
+        //     alert("ERROR: Note NOT deleted in cloud");
+        // }
     });
 }
 
