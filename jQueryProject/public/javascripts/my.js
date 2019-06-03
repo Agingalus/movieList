@@ -60,10 +60,10 @@ $(document).on("pagebeforeshow", "#details-page", function() {
 
 });
 
-$(document).on("pagebeforeshow", "#deletePage", function() {
+// $(document).on("pagebeforeshow", "#deletePage", function() {
 
-    $("#deleteWorkType").val("");
-});
+//     $("#deleteWorkType").val("");
+// });
 
 // function deleteWork() {
 //     var work = $("#deleteWorkType").val();
@@ -171,17 +171,20 @@ function addItem() {
         DateWorked: newDateWorked
 
     };
-    $("#newName").val("");
-    $("#newWorkType").val("");
-    $("#newDateEntered").val("");
-    $("#newStart").val("");
-    $("#newEnd").val("");
-    $("#newTotalTime").val("");
-    $("#newPerHour").val("");
-    $("#newTotalPay").val("");
-    $("#newDateWorked").val("");
+
 
     if (validData(newWork)) {
+
+        $("#newName").val("");
+        $("#newWorkType").val("");
+        $("#newDateEntered").val("");
+        $("#newStart").val("");
+        $("#newEnd").val("");
+        $("#newTotalTime").val("");
+        $("#newPerHour").val("");
+        $("#newTotalPay").val("");
+        $("#newDateWorked").val("");
+
         $.ajax({
             url: "/addWork/",
             type: "POST",
@@ -255,18 +258,20 @@ function updateItem() {
     };
     $("#detailParmHere").html(updateWork.WorkType);
 
-    $("#updateName").val("");
-    $("#updateWorkType").val("");
-    $("#updateDateEntered").val("");
-    $("#updateStart").val("");
-    $("#updateEnd").val("");
-    $("#updateTotalTime").val("");
-    $("#updatePerHour").val("");
-    $("#updateTotalPay").val("");
-    $("#updateDateWorked").val("");
+
 
 
     if (validData(updateWork)) {
+
+        $("#updateName").val("");
+        $("#updateWorkType").val("");
+        $("#updateDateEntered").val("");
+        $("#updateStart").val("");
+        $("#updateEnd").val("");
+        $("#updateTotalTime").val("");
+        $("#updatePerHour").val("");
+        $("#updateTotalPay").val("");
+        $("#updateDateWorked").val("");
 
         $.ajax({
             url: "/updateWork/" + id,
