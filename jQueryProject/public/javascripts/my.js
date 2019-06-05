@@ -8,13 +8,10 @@ $(document).on("pagebeforeshow ", "#home", function() {
     $("#workDisplay").empty(); // since I do this everytime the page is redone, I need to remove existing before apending them all again
     $.getJSON("./workList/") //Send an AJAX request
         .done(function(data) {
-            $.each(data, function(index, record) { // make up each li as an <a> to the details-page
+            // make up each li as an <a> to the details-page
+            $.each(data, function(index, record) {
                 $("#workDisplay").append("<li><a data-parm='" + record.WorkType + "'  href='#details-page'>" + record.WorkType + "</a></li>");
             });
-            // $.each(data, function(index, record) { // make up each li as an <a> to the details-page
-            //     $("#noteDisplay").append("<li>Priorty:" + record.Priority + "<br/>" +
-            //         "Subject:" + record.Subject + "<br/>" + "Description:" + record.Description + "</li>");
-            // });
 
 
             $("#workDisplay").listview("refresh"); // need this so jquery mobile will apply the styling to the newly added li's
@@ -32,15 +29,13 @@ $(document).on("pagebeforeshow ", "#home", function() {
 
 
 $(document).on("pagebeforeshow", "#details-page", function() {
-
+    // sting will only say "fix me" if error happened
     var textString = "fix me";
-    // let theDateEntered = new Date();
-    // let stringDate;
+
     var id = $("#detailParmHere").text();
     $.getJSON("/findWork/" + id)
         .done(function(data) {
-            // theDateEntered = data.DateEntered;
-            // stringDate = theDateEntered.toTimeString();
+            //all of the data in the item
             textString = "Name: " + data.Name + "<br> Work Type: " + data.WorkType + "<br> DateEntered: " + timeConverter(data.DateEntered) +
                 "<br> Start: " + data.Start +
                 "<br> End: " + data.End +
@@ -256,12 +251,13 @@ function updateItem() {
         DateWorked: updateDateWorked
 
     };
-    $("#detailParmHere").html(updateWork.WorkType);
+
 
 
 
 
     if (validData(updateWork)) {
+        $("#detailParmHere").html(updateWork.WorkType);
 
         $("#updateName").val("");
         $("#updateWorkType").val("");
